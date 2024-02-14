@@ -1,5 +1,5 @@
 {
   "version": 2,
-  "builds": [{ "src": "package.json", "use": "@vercel/node" }],
+  "builds": [{ "src": "/bin/www", "use": "@now/node" }],
   "routes": [{ "src": "/.*", "dest": "/bin/www" }]
 }
