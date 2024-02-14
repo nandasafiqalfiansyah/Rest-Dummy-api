@@ -4,7 +4,7 @@ const pool = require("../src/data/db");
 const response = require("../src/response");
 
 router.get("/card", function (req, res, next) {
-  const sql = `SELECT * FROM cards`;
+  const sql = `SELECT * FROM cards ORDER BY id DESC`;
   pool.query(sql, (error, fields) => {
     if (error) throw error;
     response(200, fields.rows, "success", res);
@@ -28,4 +28,22 @@ router.post("/card", (req, res) => {
     }
   });
 });
+
+router.delete("/card", (req, res) => {
+  const { id } = req.body;
+  const sql = `DELETE FROM cards WHERE id =${id}`;
+  pool.query(sql, (error, fields) => {
+    console.log(fields);
+    if (error) {
+      response(500, "Internal Server Error", "unsuccess", res);
+    } else {
+      const data = {
+        command: fields.command,
+        isSuccess: fields.rowCount,
+      };
+      response(200, data, "success", res);
+    }
+  });
+});
+
 module.exports = router;
