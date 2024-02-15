@@ -28,7 +28,7 @@ router.get("/", async (req, res) => {
 
 router.post("/register", (req, res) => {
   const { username, password } = req.body;
-  const role = "admin";
+  const role = "user";
   const query =
     "INSERT INTO users (username, password, role) VALUES ($1, $2, $3)";
   const values = [username, password, role];
