@@ -18,7 +18,7 @@ router.post("/card", (req, res) => {
   const values = [title, description, rate];
   pool.query(sql, values, (error, fields) => {
     if (error) {
-      response(500, "Internal Server Error", "unsuccess", res);
+      response(500, error, "Internal Server Error", res);
     } else {
       const data = {
         command: fields.command,
@@ -33,7 +33,6 @@ router.delete("/card", (req, res) => {
   const { id } = req.body;
   const sql = `DELETE FROM cards WHERE id =${id}`;
   pool.query(sql, (error, fields) => {
-    console.log(fields);
     if (error) {
       response(500, "Internal Server Error", "unsuccess", res);
     } else {
