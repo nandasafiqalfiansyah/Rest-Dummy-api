@@ -32,5 +32,9 @@ const options = {
 const specs = swaggerJsdoc(options);
 
 module.exports = (app) => {
-  app.use("/", swaggerUi.serve, swaggerUi.setup(specs, { explorer: true }));
+  app.use(
+    "/api-docs",
+    swaggerUi.serve,
+    swaggerUi.setup(specs, { explorer: true })
+  );
 };

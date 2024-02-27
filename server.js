@@ -6,11 +6,13 @@ var cors = require("cors");
 var usersRouter = require("./routes/users");
 var authRoutes = require("./src/handler/auth");
 const { initializeSession } = require("./src/middleware/middleware");
-const swagger = require("./swagger.js");
+var swagger = require("./swagger.js");
+var indexRouter = require("./routes/index");
 
 var app = express();
 swagger(app);
 app.use(cors());
+app.use("/", indexRouter);
 
 app.use(logger("dev"));
 app.use(express.json());
