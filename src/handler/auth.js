@@ -72,7 +72,7 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.post("/logout/:username", (req, res) => {
+router.get("/logout/:username", (req, res) => {
   const username = req.params.username;
   req.session.isLoggedIn = false;
   req.session.id = null;
