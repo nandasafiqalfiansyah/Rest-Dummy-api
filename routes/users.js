@@ -29,8 +29,8 @@ router.post("/card", (req, res) => {
   });
 });
 
-router.delete("/card", (req, res) => {
-  const { id } = req.body;
+router.delete("/card/:id", (req, res) => {
+  const { id } = req.params;
   const sql = `DELETE FROM cards WHERE id =${id}`;
   pool.query(sql, (error, fields) => {
     if (error) {

@@ -4,13 +4,13 @@ const localStorage = require("localStorage");
 const pool = require("../data/db");
 const response = require("../../src/response");
 
-router.get("/status", (req, res) => {
+router.get("/status/:username", (req, res) => {
   const isLoggedIn = req.session.isLoggedIn || false;
   if (isLoggedIn) {
     res.json({
       isLoggedIn: true,
       id: req.session.id,
-      username: req.session.username,
+      username: req.params.username,
       role: req.session.role,
     });
   } else {
@@ -72,11 +72,13 @@ router.post("/login", (req, res) => {
   });
 });
 
-router.get("/logout", (req, res) => {
+router.post("/logout/:username", (req, res) => {
+  const username = req.params.username;
   req.session.isLoggedIn = false;
   req.session.id = null;
   req.session.username = null;
   req.session.role = null;
+  res.json({ message: `Logout successful for user ${username}` });
 });
 
 module.exports = router;
