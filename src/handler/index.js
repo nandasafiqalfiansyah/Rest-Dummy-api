@@ -1,12 +1,28 @@
-var express = require("express");
-var router = express.Router();
-const pool = require("../src/data/db");
-const response = require("../src/response");
+const express = require("express");
+const router = express.Router();
+const { pool } = require("../../config/config");
+const response = require("../template/response");
+
+/* GET home page. */
+router.get("/", function (req, res, next) {
+  const date = new Date();
+  const data = {
+    Project_Name: "Dummy API's Faster",
+    Version: "V1.1",
+    Framework: "Express js",
+    Author: "Nanda safiq alfiansyah",
+    Date: date,
+    Github: "https://github.com/nandasafiqalfiansyah",
+  };
+  response(200, data, "success", res);
+});
 
 router.get("/card", function (req, res, next) {
   const sql = `SELECT * FROM cards ORDER BY id DESC`;
   pool.query(sql, (error, fields) => {
-    if (error) throw error;
+    if (error) {
+      response(500, error, "Internal Server Error", res);
+    }
     response(200, fields.rows, "success", res);
   });
 });

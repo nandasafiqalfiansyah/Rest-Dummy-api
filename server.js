@@ -1,29 +1,17 @@
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
-var usersRouter = require("./routes/users");
-var authRoutes = require("./src/handler/auth");
-const { initializeSession } = require("./src/middleware/middleware");
-var swagger = require("./swagger.js");
-var indexRouter = require("./routes/index");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const app = require("./src/routes");
+const express = require("express");
+const { PORT } = process.env;
+const server = express();
 
-var app = express();
-swagger(app);
-app.use(cors());
-app.use("/", indexRouter);
+server.use(cors());
+server.disable("x-powered-by");
+server.use(cookieParser());
+server.use(express.urlencoded({ extended: false }));
+server.use(express.json());
+server.use(app);
 
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(initializeSession);
-
-app.use("/auth", authRoutes);
-app.use("/users", usersRouter);
-
-var port = process.env.PORT || "5000";
-app.listen(port, () => {
-  console.log(`listening on port http://localhost:${port}`);
-});
+server.listen(PORT, () =>
+  console.log(`Server running on http://localhost:${PORT}`)
+);
