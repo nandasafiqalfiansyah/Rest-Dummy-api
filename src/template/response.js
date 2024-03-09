@@ -3,11 +3,11 @@ const response = (statusCode, data, message, res) => {
     payload: data,
     message,
     paginations: {
-      prev: "",
-      next: "",
-      max: 10,
-    },
-  });
-};
+      prev: '',
+      next: '',
+      max: 10
+    }
+  })
+}
 
-module.exports = response;
+module.exports = response
