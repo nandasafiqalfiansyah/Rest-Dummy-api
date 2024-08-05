@@ -1,12 +1,12 @@
-const express = require('express')
-const jwtauth = require('../handler/jwtAuth.js')
-const dashboard = require('../handler/dashboard.js')
-const indexRouter = require('../handler/index.js')
+const express = require("express");
+const indexRouter = require("../handler/index.js");
+const user = require("../handler/user.js");
+const card = require("../handler/card.js");
 
-const app = express()
+const app = express();
 
-app.use('/', indexRouter)
-app.use('/authentication', jwtauth)
-app.use('/dahboard', dashboard)
+app.use("/", indexRouter);
+app.use("/user", user);
+app.use("/card", card);
 
-module.exports = app
+module.exports = app;
