@@ -14,7 +14,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const card = await getallCard();
-    if (card) {
+    if (card == null) {
       return response(404, {}, "not found", res);
     }
     return response(200, card, "success", res);
