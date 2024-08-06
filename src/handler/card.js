@@ -14,8 +14,8 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const card = await getallCard();
-    if (card == null) {
-      response(404, "not found", "not found", res);
+    if (card) {
+      return response(404, {}, "not found", res);
     }
     return response(200, card, "success", res);
   } catch (error) {
@@ -43,7 +43,7 @@ router.post("/create", auth, async function (req, res) {
       return response(404, "not found", "not found", res);
     }
     const url = await getCardByUrlApi(urlapi);
-    if (url.url_api == urlapi) {
+    if (url) {
       return response(400, "url api already exist", "Bad Request", res);
     }
     createCard(title, description, rating, user_id, urlapi);

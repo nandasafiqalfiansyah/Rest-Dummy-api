@@ -16,13 +16,14 @@ router.post("/register", validInfo, async (req, res) => {
   try {
     const { email, name, password } = req.body;
     const user = await GetuserByEmail(email);
-    if (user.email === email) {
+    if (user != null) {
       return response(401, {}, "user already exist", res);
     }
+    const bcryptpass = await bcrypt.hash(password, 10);
     createUser(
       name,
       email,
-      bcrypt.hash(password, bcrypt.genSalt(10)),
+      bcryptpass,
       "https://firebasestorage.googleapis.com/v0/b/backend-anak.appspot.com/o/user%2Fdefault.jpeg?alt=media",
       "",
       0
@@ -37,7 +38,7 @@ router.post("/login", validInfo, async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await GetuserByEmail(email);
-    if (user.email != email) {
+    if (user == null) {
       return response(404, {}, "user not found", res);
     }
     const validPassword = await bcrypt.compare(password, user.password);
