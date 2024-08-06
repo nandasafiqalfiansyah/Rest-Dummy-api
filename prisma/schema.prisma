@@ -21,7 +21,6 @@ model User {
   url_profile String
   bio       String
   rating    Int
-  bahasa   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -31,8 +30,8 @@ model card{
   UserId    Int
   title     String
   description String
+  url_api   String  @unique
   rate Int
-  comment String[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

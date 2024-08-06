@@ -1,17 +1,26 @@
 const prisma = require("../config/config");
 
-const createUser = async (name, email, password) => {
+const createUser = async (name, email, password, url_profile, bio, rating) => {
   try {
-    const user = await prisma.user.create({
+    return await prisma.user.create({
       data: {
         name,
         email,
         password,
+        url_profile,
+        bio,
+        rating,
       },
     });
-    return user;
   } catch (error) {
-    throw error;
+    if (error.code === "P2002" && error.meta && error.meta.target === "email") {
+      return { status: "error", message: "Email already exists" };
+    }
+    return {
+      status: "error",
+      message: "An error occurred while creating the user",
+      error,
+    };
   }
 };
 
@@ -41,7 +50,7 @@ const deleteUser = async (id) => {
   }
 };
 
-const getuserByEmail = async (email) => {
+const GetuserByEmail = async (email) => {
   try {
     const user = await prisma.user.findUnique({
       where: {
@@ -50,13 +59,13 @@ const getuserByEmail = async (email) => {
     });
     return user;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
-module.exsports = {
+module.exports = {
   createUser,
   getUsersbyId,
   deleteUser,
-  getuserByEmail,
+  GetuserByEmail,
 };

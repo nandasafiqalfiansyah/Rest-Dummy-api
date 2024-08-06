@@ -1,82 +1,68 @@
-const router = require(".");
+const response = require("../utils/response");
+const auth = require("../middleware/authorize");
 const {
   createCard,
   getCardById,
   updateCard,
   deleteCard,
   getallCard,
+  getCardByUrlApi,
 } = require("../db/card.db");
-const response = require("../template/response");
-const auth = require("../middleware/authorize");
+const express = require("express");
+const router = express.Router();
 
-router.get("/", function (req, res) {
+router.get("/", async (req, res) => {
   try {
-    const user = getallCard();
-    if (length(user) == 0) {
+    const card = await getallCard();
+    if (card == null) {
       response(404, "not found", "not found", res);
     }
-    response(200, user, "success", res);
+    return response(200, card, "success", res);
   } catch (error) {
-    if (error.code === 404) {
-      response(404, error, "Data Not Found", res);
-    } else if (error.code === 500) {
-      response(500, error, "Internal Server Error", res);
-    } else {
-      response(400, error, "Bad Request", res);
-    }
+    return response(500, error, "Internal Server Error", res);
   }
 });
 
-router.get("/:id", function (req, res) {
+router.get("/:id", async (req, res) => {
   try {
-    const user = getCardById(req.params.id);
-    if (user == null) {
-      response(404, "not found", "not found", res);
+    const card = await getCardById(req.params.id);
+    if (card == null) {
+      return response(404, "not found", "not found", res);
     }
-    response(200, user, "success", res);
+    return response(200, card, "success", res);
   } catch (error) {
-    if (error.code === 404) {
-      response(404, error, "Data Not Found", res);
-    } else if (error.code === 500) {
-      response(500, error, "Internal Server Error", res);
-    } else {
-      response(400, error, "Bad Request", res);
-    }
+    return response(500, error, "Internal Server Error", res);
   }
 });
 
-router.post("/create", auth, function (req, res) {
+router.post("/create", auth, async function (req, res) {
   try {
     const user_id = req.user.id;
-    const { title, description, rating, comentar } = req.body;
-    const user = createCard(title, description, rating, user_id);
-    response(200, user, "success", res);
-  } catch (error) {
-    if (error.code === 404) {
-      response(404, error, "Data Not Found", res);
-    } else if (error.code === 500) {
-      response(500, error, "Internal Server Error", res);
-    } else {
-      response(400, error, "Bad Request", res);
+    const { title, description, rating, urlapi } = req.body;
+    if (user_id == null) {
+      return response(404, "not found", "not found", res);
     }
+    const url = await getCardByUrlApi(urlapi);
+    if (url.url_api == urlapi) {
+      return response(400, "url api already exist", "Bad Request", res);
+    }
+    createCard(title, description, rating, user_id, urlapi);
+    return response(200, {}, "success", res);
+  } catch (error) {
+    return response(500, error, "Internal Server Error", res);
   }
 });
 
-router.delete("/:id", function (req, res) {
+router.delete("/:id", async function (req, res) {
   try {
-    const user = deleteCard(req.params.id);
-    if (user == null) {
-      response(404, "not found", "not found", res);
+    const card = await getCardById(req.params.id);
+    if (card == null) {
+      return response(404, "not found", "not found", res);
     }
-    response(200, user, "success", res);
+    deleteCard(req.params.id);
+    return response(200, user, "success", res);
   } catch (error) {
-    if (error.code === 404) {
-      response(404, error, "Data Not Found", res);
-    } else if (error.code === 500) {
-      response(500, error, "Internal Server Error", res);
-    } else {
-      response(400, error, "Bad Request", res);
-    }
+    return response(500, error, "Internal Server Error", res);
   }
 });
 

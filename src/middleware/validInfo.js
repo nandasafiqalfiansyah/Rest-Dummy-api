@@ -1,25 +1,26 @@
+const response = require("../utils/response");
+
 module.exports = function (req, res, next) {
-  const { email, name, password } = req.body
+  const { email, name, password } = req.body;
 
-  function validEmail (userEmail) {
-    // eslint-disable-next-line no-useless-escape
-    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail)
+  function validEmail(userEmail) {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(userEmail);
   }
 
-  if (req.path === '/register') {
-    console.log(!email.length)
+  if (req.path === "/register") {
+    // console.log(!email.length);
     if (![email, name, password].every(Boolean)) {
-      return res.json('Missing Credentials')
+      return response(401, null, "Missing Credentials", res);
     } else if (!validEmail(email)) {
-      return res.json('Invalid')
+      return response(401, null, "Invalid Format Email", res);
     }
-  } else if (req.path === '/login') {
+  } else if (req.path === "/login") {
     if (![email, password].every(Boolean)) {
-      return res.json('Missing Credentials')
+      return response(401, null, "Missing Credentials", res);
     } else if (!validEmail(email)) {
-      return res.json('Invalid Email')
+      return response(401, null, "Invalid Format Email", res);
     }
   }
 
-  next()
-}
+  next();
+};

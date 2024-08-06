@@ -7,7 +7,6 @@ CREATE TABLE "User" (
     "url_profile" TEXT NOT NULL,
     "bio" TEXT NOT NULL,
     "rating" INTEGER NOT NULL,
-    "bahasa" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -20,8 +19,8 @@ CREATE TABLE "card" (
     "UserId" INTEGER NOT NULL,
     "title" TEXT NOT NULL,
     "description" TEXT NOT NULL,
+    "url_api" TEXT NOT NULL,
     "rate" INTEGER NOT NULL,
-    "comment" TEXT[],
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -31,5 +30,5 @@ CREATE TABLE "card" (
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
--- AddForeignKey
-ALTER TABLE "card" ADD CONSTRAINT "card_UserId_fkey" FOREIGN KEY ("UserId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+-- CreateIndex
+CREATE UNIQUE INDEX "card_url_api_key" ON "card"("url_api");

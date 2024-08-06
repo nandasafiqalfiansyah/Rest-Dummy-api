@@ -1,14 +1,14 @@
 const prisma = require("../config/config");
 
-const createCard = async (title, description, rating, comentar, user_id) => {
+const createCard = async (title, description, rate, UserId, url_api) => {
   try {
     const card = await prisma.card.create({
       data: {
         title,
         description,
-        rating,
-        comentar,
-        user_id,
+        rate,
+        url_api,
+        UserId,
       },
     });
     return card;
@@ -30,12 +30,21 @@ const getCardById = async (id) => {
   }
 };
 
+const getCardByUrlApi = async (url_api) => {
+  const card = await prisma.card.findUnique({
+    where: {
+      url_api,
+    },
+  });
+  return card;
+};
+
 const getallCard = async () => {
   try {
     const card = await prisma.card.findMany();
     return card;
   } catch (error) {
-    throw error;
+    return error;
   }
 };
 
@@ -91,4 +100,5 @@ module.exports = {
   deleteCard,
   getallCard,
   allcardbyuser,
+  getCardByUrlApi,
 };
