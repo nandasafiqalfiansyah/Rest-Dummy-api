@@ -5,11 +5,10 @@ const response = require("../utils/response.js");
 
 const app = express();
 
-// app.use("/", indexRouter);
 app.use("/user", user);
 app.use("/card", card);
-// app.use("*", function (req, res) {
-//   response(404, "not found", "🤣👋", res);
-// });
+app.use("*", function (req, res) {
+  response(404, "not found", "🤣👋", res);
+});
 
 module.exports = app;
