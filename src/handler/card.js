@@ -36,9 +36,9 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/user/:id", async (req, res) => {
+router.get("/user/:id", auth, async (req, res) => {
   try {
-    const card = await getallByUser(req.params.id);
+    const card = await getallByUser(req.user.id);
     if (card == null) {
       return response(404, "not found", "not found", res);
     }
