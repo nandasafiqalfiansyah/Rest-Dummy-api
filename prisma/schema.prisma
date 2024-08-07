@@ -31,9 +31,15 @@ model card{
   title     String
   description String
   url_api   String  @unique
-  rate Int
+  rate Float
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-
+model Employed {
+  id        Int      @id @default(autoincrement())
+  name      String
+  position  String
+  startDate DateTime
+  salary    Float
+}

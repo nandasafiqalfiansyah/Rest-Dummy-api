@@ -7,6 +7,7 @@ const {
   deleteCard,
   getallCard,
   getCardByUrlApi,
+  getallByUser,
 } = require("../db/card.db");
 const express = require("express");
 const router = express.Router();
@@ -35,6 +36,18 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.get("/user/:id", async (req, res) => {
+  try {
+    const card = await getallByUser(req.params.id);
+    if (card == null) {
+      return response(404, "not found", "not found", res);
+    }
+    return response(200, card, "success", res);
+  } catch (error) {
+    return response(500, error, "Internal Server Error", res);
+  }
+});
+
 router.post("/create", auth, async function (req, res) {
   try {
     const user_id = req.user.id;
@@ -53,7 +66,7 @@ router.post("/create", auth, async function (req, res) {
   }
 });
 
-router.delete("/:id", async function (req, res) {
+router.delete("/delete/:id", async function (req, res) {
   try {
     const card = await getCardById(req.params.id);
     if (card == null) {

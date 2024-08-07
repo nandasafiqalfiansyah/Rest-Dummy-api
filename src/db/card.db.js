@@ -48,6 +48,19 @@ const getallCard = async () => {
   }
 };
 
+const getallByUser = async (user_id) => {
+  try {
+    const card = await prisma.card.findMany({
+      where: {
+        user_id,
+      },
+    });
+    return card;
+  } catch (error) {
+    throw error;
+  }
+};
+
 const allcardbyuser = async (user_id) => {
   try {
     const card = await prisma.card.findMany({
@@ -101,4 +114,5 @@ module.exports = {
   getallCard,
   allcardbyuser,
   getCardByUrlApi,
+  getallByUser,
 };
