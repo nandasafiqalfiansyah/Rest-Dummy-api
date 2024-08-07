@@ -36,7 +36,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.get("/user/:id", auth, async (req, res) => {
+router.get("/user/card", auth, async (req, res) => {
   try {
     const card = await getallByUser(req.user.id);
     if (card == null) {
